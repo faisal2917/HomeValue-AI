@@ -1,0 +1,5 @@
+# Extra tools for exploration, training and tests.
+-r requirements.txt
+matplotlib==3.9.4
+seaborn==0.13.2
+pytest

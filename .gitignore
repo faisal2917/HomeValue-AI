@@ -1,0 +1,77 @@
+# ---------------------------------------------------------------
+# Secrets and credentials: never commit these to a public repo
+# ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+.streamlit/secrets.toml
+secrets/
+*.secret
+*.secrets
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+credentials*.json
+*credentials*.json
+service-account*.json
+*-service-account.json
+client_secret*.json
+token.json
+*.token
+.netrc
+.pypirc
+.npmrc
+.git-credentials
+.aws/
+.gcp/
+.azure/
+kaggle.json
+
+# ---------------------------------------------------------------
+# Local / private tooling config (machine-specific paths, settings)
+# ---------------------------------------------------------------
+.claude/
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# ---------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Downloaded dataset cache (re-fetched automatically by scikit-learn)
+scikit_learn_data/
+
+# ---------------------------------------------------------------
+# Logs, temp files, OS clutter
+# ---------------------------------------------------------------
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

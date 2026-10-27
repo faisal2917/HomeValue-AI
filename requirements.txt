@@ -1,0 +1,8 @@
+# Runtime dependencies for the Streamlit app (used by Streamlit Community Cloud).
+# scikit-learn is pinned to the version that trained models/house_price_model.joblib;
+# a different version may fail to load the model or warn about it.
+streamlit==1.50.0
+scikit-learn==1.6.1
+pandas==2.3.3
+numpy==2.0.2
+joblib==1.5.3

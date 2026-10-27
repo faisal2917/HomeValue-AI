@@ -3,10 +3,77 @@
 Predict the median house value of a California neighborhood from census data, using
 scikit-learn regression models and an interactive Streamlit app.
 
+## How it works
+
+The project has two halves. An **offline training pipeline** runs once, picks the best
+model, and saves it to a file. The **Streamlit app** loads that file and turns user input
+into a price estimate.
+
+```mermaid
+flowchart TB
+    subgraph OFFLINE["Offline: run once"]
+        direction TB
+        DS[("California Housing dataset<br/>20,640 neighborhoods")]
+        EX["scripts/explore.py<br/>statistics and charts"]
+        TR["scripts/train.py<br/>train and compare models"]
+        DS --> EX
+        DS --> TR
+    end
+
+    MODEL[("models/<br/>house_price_model.joblib")]
+
+    subgraph ONLINE["Online: Streamlit app"]
+        direction LR
+        APP["app.py<br/>input form and result card"]
+        USER(["Visitor"])
+        USER -- "property details" --> APP
+        APP -- "estimated price" --> USER
+    end
+
+    TR -- "save best model" --> MODEL
+    MODEL -- "load once, cached" --> APP
+    EX -. "reports/figures" .-> REPORTS[("reports/")]
+    TR -. "metrics.json" .-> REPORTS
+```
+
+### Training pipeline (`scripts/train.py`)
+
+```mermaid
+flowchart TD
+    A["Load data<br/>fetch_california_housing()"] --> B["Separate features X<br/>and target y"]
+    B --> C["Split 80% train / 20% test<br/>random_state = 42"]
+    C --> D1["Linear Regression<br/>+ StandardScaler"]
+    C --> D2["Decision Tree<br/>max_depth = 12"]
+    C --> D3["Random Forest<br/>200 trees"]
+    D1 --> E["Evaluate each model on the unseen test set<br/>MAE · RMSE · R²"]
+    D2 --> E
+    D3 --> E
+    E --> F{"Lowest test RMSE?"}
+    F -- "Random Forest wins" --> G["Refit the winner on all 20,640 rows"]
+    G --> H[("Save with joblib<br/>pipeline + metrics + feature ranges")]
+    E --> I[("reports/metrics.json")]
+```
+
+### What happens when you click **Predict value** (`app.py`)
+
+```mermaid
+flowchart TD
+    U(["Visitor picks a location and<br/>enters neighborhood details"]) --> P["Click Predict value"]
+    P --> V{"validate_inputs()"}
+    V -- "Invalid: e.g. bedrooms > rooms,<br/>location outside California" --> ERR["Show error message<br/>no prediction made"]
+    V -- "Valid" --> R{"Inside the range seen<br/>during training?"}
+    R -- "No" --> W["Add a reliability warning"]
+    R -- "Yes" --> M
+    W --> M["predict_price()<br/>Random Forest pipeline"]
+    M --> OUT["Result card:<br/>price · likely range ± MAE ·<br/>vs. California median · map"]
+```
+
 ## Project layout
 
 ```
 app.py                     Streamlit UI (Phase 5)
+assets/style.css           App styling
+.streamlit/config.toml     Streamlit theme and settings (no secrets)
 homevalue/data.py          Dataset loading, feature list, train/test split
 homevalue/predict.py       Model loading, input validation, prediction, currency formatting
 scripts/explore.py         Phase 1: inspect the data, save charts to reports/figures/
@@ -88,7 +155,9 @@ streamlit run app.py
 ```
 
 Pick a city (or enter custom coordinates), fill in the neighborhood details, and click
-**Predict**. The app shows the estimate in dollars with a typical range of ± the model's MAE.
+**Predict value**. The result card shows the estimate in dollars, a likely range of ± the
+model's MAE, a comparison with the California median, and the location on a map. Styling
+lives in `assets/style.css` and the theme in `.streamlit/config.toml`.
 It blocks impossible inputs, such as more bedrooms than rooms or a location outside
 California, and warns when an input is outside the range the model was trained on.
 
@@ -117,4 +186,10 @@ several cities, custom coordinates, invalid input and out-of-range warnings.
 `requirements.txt` pins `scikit-learn==1.6.1` because a joblib model should be loaded with
 the same scikit-learn version that trained it. If you upgrade scikit-learn, rerun
 `scripts/train.py`.
-# HomeValue-AI
+
+### Secrets
+
+The app currently needs no API keys or passwords. If you add any, put them in
+`.streamlit/secrets.toml` locally (it is git-ignored) and in the app's **Settings → Secrets**
+on Streamlit Community Cloud. Never commit them: this repository is public, and
+`.gitignore` already excludes `.env` files, key files and credential JSON files.

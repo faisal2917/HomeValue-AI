@@ -1,0 +1,53 @@
+{
+  "selected_model": "Random Forest",
+  "results": {
+    "Linear Regression": {
+      "train": {
+        "MAE": 0.5286,
+        "RMSE": 0.7197,
+        "R2": 0.6126,
+        "MAE_dollars": 52863,
+        "RMSE_dollars": 71968
+      },
+      "test": {
+        "MAE": 0.5332,
+        "RMSE": 0.7456,
+        "R2": 0.5758,
+        "MAE_dollars": 53320,
+        "RMSE_dollars": 74558
+      }
+    },
+    "Decision Tree": {
+      "train": {
+        "MAE": 0.312,
+        "RMSE": 0.4654,
+        "R2": 0.838,
+        "MAE_dollars": 31205,
+        "RMSE_dollars": 46542
+      },
+      "test": {
+        "MAE": 0.4048,
+        "RMSE": 0.6026,
+        "R2": 0.7229,
+        "MAE_dollars": 40483,
+        "RMSE_dollars": 60257
+      }
+    },
+    "Random Forest": {
+      "train": {
+        "MAE": 0.1721,
+        "RMSE": 0.2798,
+        "R2": 0.9414,
+        "MAE_dollars": 17212,
+        "RMSE_dollars": 27985
+      },
+      "test": {
+        "MAE": 0.3277,
+        "RMSE": 0.5068,
+        "R2": 0.804,
+        "MAE_dollars": 32771,
+        "RMSE_dollars": 50679
+      }
+    }
+  }
+}
