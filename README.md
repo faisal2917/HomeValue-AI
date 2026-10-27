@@ -1,7 +1,25 @@
 # HomeValue AI
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6.1-F7931E?logo=scikitlearn&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.50-FF4B4B?logo=streamlit&logoColor=white)
+![Test R²](https://img.shields.io/badge/Test%20R%C2%B2-0.80-0F766E)
+
 Predict the median house value of a California neighborhood from census data, using
 scikit-learn regression models and an interactive Streamlit app.
+
+## Quick start
+
+```bash
+git clone https://github.com/faisal2917/HomeValue-AI.git
+cd HomeValue-AI
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+The trained model is included in `models/`, so the app runs right away. To retrain it or
+explore the data, install `requirements-dev.txt` instead (see [Setup](#setup)).
 
 ## How it works
 
